@@ -59,7 +59,18 @@ All the possible endpoints are listed here: [actuator.endpoints](https://docs.sp
 Example of requesting `/beans` endpoint, that we just have enabled:
 ![](img/actuator-beans-endpoint-response.png)
 
-#### 'Health' indicators
+#### Health indicators
+
+Out-of-the-box Spring Boot registers `DiskSpaceHealthIndicator` and `PingHealthIndicator` to report 
+the healthiness of particular application aspect. Also, Spring Boot registers some indicators conditionally - if some 
+dependencies are on the classpath or some other conditions are met.
+
+Here is a full list of [auto-configured indicators](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints.health.auto-configured-health-indicators)
+
+To implement custom health indicator we have to implement `HealthIndicator` interface, see `com.example.health.RandomHealthIndicator`.
+
+Here is what `/health` endpoint returns in response when RandomHealthIndicator is created:
+![](img/actuator-beans-endpoint-response.png)
 
 #### Metrics | Micrometer
 Micrometer is now part of the Actuator’s dependencies, so we should be good to go as long as the Actuator dependency is 
@@ -93,6 +104,7 @@ charts to visualize the metrics
 
 
 https://docs.spring.io/spring-boot/docs/2.0.x/actuator-api/html/
+https://www.baeldung.com/spring-boot-health-indicators
 https://www.baeldung.com/micrometer
 https://spring.io/blog/2018/03/16/micrometer-spring-boot-2-s-new-application-metrics-collector
 
