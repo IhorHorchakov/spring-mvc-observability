@@ -1,6 +1,6 @@
 This is a draft project to play with observability && monitoring configs.
 
-### Theory
+## Theory
 
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
 three pillars - logging, metrics and traces.
