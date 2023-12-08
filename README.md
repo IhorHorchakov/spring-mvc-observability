@@ -21,6 +21,7 @@ The actuator mainly exposes operational information about the running applicatio
 It uses HTTP endpoints or JMX beans to enable us to interact with it.
 
 **Actuator 1.x vs 2.x**
+
 Spring Boot Actuator has been available since April 2014, together with the first Spring Boot release. With the release 
 of Spring Boot 2, Actuator has been redesigned, and new exciting endpoints were added, this makes a breaking changes: 
 
@@ -39,6 +40,7 @@ by implementing the right adapters.
 We will use 2.x Actuator.
 
 **'Discovery' endpoint and hypermedia**
+
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
 
