@@ -37,7 +37,7 @@ place with main app.
 model, we can take advantage of MVC and WebFlux as an underlying web technology. Forthcoming technologies could be added
 by implementing the right adapters.
 
-We will use 2.x Actuator.
+We will be using 2.x Actuator at this project.
 
 #### 'Discovery' endpoint and hypermedia
 
@@ -58,7 +58,6 @@ All the possible endpoints are listed here: [actuator.endpoints](https://docs.sp
 
 Example of requesting `/beans` endpoint, that we just have enabled:
 ![](img/actuator-beans-endpoint-response.png)
-
 
 #### 'Health' indicators
 
