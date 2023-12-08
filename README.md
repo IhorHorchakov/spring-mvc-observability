@@ -67,7 +67,7 @@ dependencies are on the classpath or some other conditions are met.
 
 Here is a full list of [auto-configured indicators](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints.health.auto-configured-health-indicators)
 
-To implement custom health indicator we have to implement `HealthIndicator` interface, see `com.example.health.RandomHealthIndicator`.
+To create a custom health indicator we have to implement `HealthIndicator` interface, see `com.example.health.RandomHealthIndicator`.
 
 Here is what `/health` endpoint returns in response when RandomHealthIndicator is created:
 ![](img/actuator-beans-endpoint-response.png)
@@ -94,7 +94,7 @@ We can get a metrics response from the `/metrics` endpoint:
 #### Logging
 
 
-*Grafana helps to monitor and visualize the metrics by building different dashboards and can use different kinds of 
+* Grafana helps to monitor and visualize the metrics by building different dashboards and can use different kinds of 
 charts to visualize the metrics
 * Micrometer as a metrics collector for Spring Boot
 * Prometheus as a metrics aggregation tool
