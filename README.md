@@ -7,7 +7,7 @@ three pillars - logging, metrics and traces.
 
 For metrics and traces, Spring Boot uses Actuator. For logging ...
 
-#### Spring Boot Actuator | metrics and traces
+### Metrics and Traces | Spring Boot Actuator
 
 Actuator brings production-ready features to our application: monitoring our app, gathering metrics, and understanding 
 traffic or the state of our database becomes trivial with this dependency.
@@ -20,7 +20,7 @@ features ourselves.
 The actuator mainly exposes operational information about the running application — health, metrics, info, dump, env, etc.
 It uses HTTP endpoints or JMX beans to enable us to interact with it.
 
-###### Actuator 1.x vs 2.x
+#### Actuator 1.x vs 2.x
 
 Spring Boot Actuator has been available since April 2014, together with the first Spring Boot release. With the release 
 of Spring Boot 2, Actuator has been redesigned, and new exciting endpoints were added, this makes a breaking changes: 
@@ -39,7 +39,7 @@ by implementing the right adapters.
 
 We will use 2.x Actuator.
 
-###### 'Discovery' endpoint and hypermedia
+#### 'Discovery' endpoint and hypermedia
 
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
@@ -60,19 +60,19 @@ Example of requesting `/beans` endpoint, that we just have enabled:
 ![](img/actuator-beans-endpoint-response.png)
 
 
-###### 'Health' indicators
+#### 'Health' indicators
 
-###### Metrics | Micrometer
+#### Metrics | Micrometer
 Micrometer is now part of the Actuator’s dependencies, so we should be good to go as long as the Actuator dependency is 
 in the classpath.
 We can get a metrics response from the `/metrics` endpoint:
 
 
-###### Tracing
+#### Tracing
 
-###### Loggers
+#### Loggers
 
-###### Custom endpoints
+#### Custom endpoints
 
 
 
