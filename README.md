@@ -42,12 +42,29 @@ We will use 2.x Actuator.
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
 
-![](img/discovery-endpoint-custom-path.png)
+![](img/actuator-discovery-endpoint-response.png)
+
+In order to access all the actuator endpoints using HTTP, we need to both enable and expose them. By default, all endpoints
+but `/shutdown` are enabled. Only the `/health` and `/info` endpoints are exposed by default. We need to add the following
+configuration to expose all endpoints:
+`management.endpoints.web.exposure.include=*`
+
+or define a list of exposed endpoints:
+`management.endpoints.web.exposure.include=health, info, beans, metrics`
+
+All the possible endpoints are listed here: [actuator.endpoints](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints)
+
+Example of requesting `/beans` endpoint, that we just have enabled:
+![](img/actuator-beans-endpoint-response.png)
 
 
-**'Health' endpoints**
+**'Health' indicators**
 
 **Metrics | Micrometer**
+Micrometer is now part of the Actuator’s dependencies, so we should be good to go as long as the Actuator dependency is 
+in the classpath.
+We can get a metrics response from the `/metrics` endpoint:
+
 
 **Tracing**
 
