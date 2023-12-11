@@ -54,8 +54,7 @@ We will be using 2.x Actuator at this project.
 
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
-
-![](img/actuator-discovery-endpoint-response.png)
+<img src="img/actuator-discovery-endpoint-response.png" width="720px"/>
 
 In order to access all the actuator endpoints using HTTP, we need to both enable and expose them. By default, all endpoints
 but `/shutdown` are enabled. Only the `/health` and `/info` endpoints are exposed by default. We need to add the following
@@ -90,7 +89,7 @@ Spring Boot Actuator provides dependency management and auto-configuration for M
 We can use Actuator to get a possible metric names from the `/metrics` endpoint. All the possible metrics are listed here.
 ![](img/actuator-metrics-jvm-threads-endpoint-response.png)
 
-**Micrometer: Meter and MeterRegistry**
+##### Micrometer: Meter and MeterRegistry
 
 `Meter` represents a family of metrics of one type(Gauge/Timers/Counter/Other). Spring Boot 2 configures a composite `MeterRegistry` 
 to which any number of registry implementations can be added, allowing you to ship your metrics to more than one 
@@ -130,7 +129,7 @@ Getting Counter metric `Counted:RestApiController.getCars`:
 Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 ![](img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png)
 
-**Micrometer: Observation**
+##### Micrometer: Observation
 
 TODO: @Observed, ObservedAspect
 
