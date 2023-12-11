@@ -4,7 +4,6 @@ import com.example.repository.entity.Car;
 import com.example.repository.entity.Rent;
 import com.example.repository.CarRepository;
 import com.example.repository.RentalRepository;
-import io.micrometer.core.annotation.Timed;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +35,6 @@ public class CarRentManager {
         return carRepository.getCars();
     }
 
-    @Timed("Timed:CarRentManager.rentCar")
     public RentResult rentCar(String carId, LocalDateTime from, LocalDateTime to) {
         if (carId == null) {
             return new RentResult(NOT_VALID, "Rent is not valid, carId is null");
