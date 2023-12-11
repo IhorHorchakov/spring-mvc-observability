@@ -80,7 +80,7 @@ Here is a full list of [auto-configured indicators](https://docs.spring.io/sprin
 To create a custom health indicator we have to implement `HealthIndicator` interface, see `com.example.health.RandomHealthIndicator`.
 
 Here is what `/health` endpoint returns in response when RandomHealthIndicator is created:
-<p align="center"><img src="img/actuator-beans-endpoint-response.png" width="600px"/></p>
+<p align="center"><img src="img/actuator-health-endpoint-response.png" width="600px"/></p>
 
 ##### Actuator: Metrics | Micrometer
 
