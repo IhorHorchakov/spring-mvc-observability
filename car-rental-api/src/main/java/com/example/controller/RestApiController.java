@@ -4,6 +4,7 @@ import com.example.client.CarRentalManagerClient;
 import com.example.controller.request.CarRentRequest;
 import com.example.controller.response.CarRentResponse;
 import com.example.controller.response.CarsResponse;
+import io.micrometer.core.annotation.Counted;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,14 @@ public class RestApiController {
     private CarRentalManagerClient client;
 
     @GetMapping(value = "/cars")
+    @Counted("Counted:RestApiController.getCars")
     public ResponseEntity<CarsResponse> getCars() {
         CarsResponse response = client.getCars();
         return ResponseEntity.ofNullable(response);
     }
 
     @PostMapping("/rent")
+    @Counted("Counted:RestApiController.postRentCar")
     public ResponseEntity<CarRentResponse> postRentCar(@RequestBody CarRentRequest request) {
         CarRentResponse response = client.rentCar(request);
         return ResponseEntity.ofNullable(response);

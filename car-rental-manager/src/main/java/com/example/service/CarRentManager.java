@@ -4,6 +4,7 @@ import com.example.repository.entity.Car;
 import com.example.repository.entity.Rent;
 import com.example.repository.CarRepository;
 import com.example.repository.RentalRepository;
+import io.micrometer.core.annotation.Timed;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,16 @@ public class CarRentManager {
         return carRepository.getCars();
     }
 
+    @Timed("Timed:CarRentManager.rentCar")
     public RentResult rentCar(String carId, LocalDateTime from, LocalDateTime to) {
         if (carId == null) {
             return new RentResult(NOT_VALID, "Rent is not valid, carId is null");
         }
         if (from.isAfter(to)) {
             return new RentResult(carId, NOT_VALID, "Rent is not valid, dateFrom stays after dateTo, carId = " + carId);
+        }
+        if (!carRepository.isCarExists(carId)) {
+            return new RentResult(carId, NOT_VALID, "The car does not exist, carId = " + carId);
         }
         if (rentalRepository.isCarInRent(carId, from, to)) {
             return new RentResult(carId, ALREADY_IN_RENT, "The car is in rent already, pick another dates");

@@ -1,18 +1,27 @@
 package com.example.repository;
 
+import com.example.metric.GaugeRegistry;
 import com.example.repository.entity.Rent;
-import io.micrometer.observation.annotation.Observed;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
-@Observed
 public class RentalInMemoryRepository implements RentalRepository {
+
+    @Autowired
+    private GaugeRegistry gaugeRegistry;
     private Map<String, Rent> storage = new HashMap<>();
+    @Autowired
+    public RentalInMemoryRepository(GaugeRegistry gaugeRegistry) {
+        gaugeRegistry.gaugeMap("Gauge:RentalInMemoryRepository.storage.size", storage);
+    }
 
     @Override
     public Rent save(Rent rent) {
