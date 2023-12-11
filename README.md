@@ -54,7 +54,7 @@ We will be using 2.x Actuator at this project.
 
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
-<p align="center"><img src="img/actuator-discovery-endpoint-response.png" width="720px"/></p>
+<p align="center"><img src="img/actuator-discovery-endpoint-response.png" width="600px"/></p>
 
 In order to access all the actuator endpoints using HTTP, we need to both enable and expose them. By default, all endpoints
 but `/shutdown` are enabled. Only the `/health` and `/info` endpoints are exposed by default. We need to add the following
@@ -67,7 +67,7 @@ or define a list of exposed endpoints:
 All the possible endpoints are listed here: [actuator.endpoints](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html#actuator.endpoints)
 
 Example of requesting `/beans` endpoint, that we just have enabled:
-![](img/actuator-beans-endpoint-response.png)
+<p align="center"><img src="img/actuator-beans-endpoint-response.png" width="600px"/></p>
 
 ##### Actuator: Health indicators
 
@@ -80,14 +80,14 @@ Here is a full list of [auto-configured indicators](https://docs.spring.io/sprin
 To create a custom health indicator we have to implement `HealthIndicator` interface, see `com.example.health.RandomHealthIndicator`.
 
 Here is what `/health` endpoint returns in response when RandomHealthIndicator is created:
-![](img/actuator-beans-endpoint-response.png)
+<p align="center"><img src="img/actuator-beans-endpoint-response.png" width="600px"/></p>
 
 ##### Actuator: Metrics | Micrometer
 
 Spring Boot Actuator provides dependency management and auto-configuration for Micrometer: [Micrometer Observation](https://micrometer.io/docs/observation).
 
 We can use Actuator to get a possible metric names from the `/metrics` endpoint. All the possible metrics are listed here.
-![](img/actuator-metrics-jvm-threads-endpoint-response.png)
+<p align="center"><img src="img/actuator-metrics-jvm-threads-endpoint-response.png" width="600px"/></p>
 
 ##### Micrometer: Meter and MeterRegistry
 
@@ -118,16 +118,16 @@ When we use annotations `@Counted` and `@Timed`, the corresponding aspect regist
 We also can register the Meter(metric) programmatically like we do for Gauge (see RentalInMemoryRepository).
 
 Here is a response with new metrics added by using annotations:
-![](img/actuator-new-metrics-endpoint-response.png)
+<p align="center"><img src="img/actuator-new-metrics-endpoint-response.png" width="600px"/></p>
 
 Getting Timer metric `Timed:CarRentalManagerClient.rentCar`:
-![](img/actuator-metrics-timed-CarRentalManagerClient-rentCar.png)
+<p align="center"><img src="img/actuator-metrics-timed-CarRentalManagerClient-rentCar.png" width="600px"/></p>
 
 Getting Counter metric `Counted:RestApiController.getCars`:
-![](img/actuator-metrics-counted-RestApiController-getCars.png)
+<p align="center"><img src="img/actuator-metrics-counted-RestApiController-getCars.png" width="600px"/></p>
 
 Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
-![](img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png)
+<p align="center"><img src="img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png" width="600px"/></p>
 
 ##### Micrometer: Observation
 
