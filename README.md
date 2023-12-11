@@ -16,7 +16,7 @@ This is a draft project to play with observability && monitoring configs.
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
 three pillars - **logging, metrics and traces**.
 
-For metrics and traces, Spring uses `Spring Boot Actuator`. For logging ...
+For metrics and traces Spring uses `Spring Boot Actuator`. For logging ...
 
 ### Metrics and Traces | Spring Boot Actuator
 
@@ -57,7 +57,7 @@ All Actuator endpoints are now placed under the `/actuator` path by default. We 
 <p align="center"><img src="img/actuator-discovery-endpoint-response.png" width="600px"/></p>
 
 In order to access all the actuator endpoints using HTTP, we need to both enable and expose them. By default, all endpoints
-but `/shutdown` are enabled. Only the `/health` and `/info` endpoints are exposed by default. We need to add the following
+but `/shutdown` are enabled, and only the `/health` and `/info` endpoints are exposed. We have to add the following
 configuration to expose all endpoints:
 `management.endpoints.web.exposure.include=*`
 
@@ -91,9 +91,7 @@ We can use Actuator to get a possible metric names from the `/metrics` endpoint.
 
 ##### Micrometer: Meter and MeterRegistry
 
-`Meter` represents a family of metrics of one type(Gauge/Timers/Counter/Other). Spring Boot 2 configures a composite `MeterRegistry` 
-to which any number of registry implementations can be added, allowing you to ship your metrics to more than one 
-monitoring system - HumioPropertiesConfigAdapter, DatadogPropertiesConfigAdapter, NewRelicPropertiesConfigAdapter, and many others.
+Spring Boot configures a `SimpleMeterRegistry` by default.
 
 Using `CompositeMeterRegistry` provides a solution to publish application metrics to various
 supported monitoring systems simultaneously. Using `MeterRegistryCustomizer` you can customize the whole set of registries
@@ -101,6 +99,8 @@ at once or individual implementations in particular. For example, a commonly req
 * (1) export metrics to both Prometheus and CloudWatch, 
 * (2) add a set of common tags to metrics flowing to both (for example, host and application identifying tags),
 * (3) whitelist only a small subset of metrics to CloudWatch.
+
+`Meter` represents a family of metrics of one type(Gauge/Timers/Counter/Other). 
 
 Well-known meter types/families:
 * Counter: merely reports a count over a specified property of an application. Could be useful when counting a number of
@@ -115,7 +115,7 @@ Timer is used by `@Timed` annotation to measure execution time in cross-cutting 
 hitting an http server.
 
 When we use annotations `@Counted` and `@Timed`, the corresponding aspect registers the Meter of some type(COUNTER, TIMER).
-We also can register the Meter(metric) programmatically like we do for Gauge (see RentalInMemoryRepository).
+We also can register the Meter programmatically like we do for Gauge (see RentalInMemoryRepository).
 
 Here is a response with new metrics added by using annotations:
 <p align="center"><img src="img/actuator-new-metrics-endpoint-response.png" width="600px"/></p>
@@ -129,14 +129,23 @@ Getting Counter metric `Counted:RestApiController.getCars`:
 Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 <p align="center"><img src="img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png" width="600px"/></p>
 
-##### Micrometer: Observation
-
-TODO: @Observed, ObservedAspect
-
 ##### Tracing
 
 Distributed tracing allows you to see the entire journey of your requests throughout a distributed system. Spring Boot 
 Actuator uses [Micrometer Tracing](https://micrometer.io/docs/tracing) as a trace collector.
+
+##### Micrometer: Instrumentation using Observation API
+DRAFT
+https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
+Instrumentation is the most powerful feature of Micrometer. **The idea is to shift our focus from how we want to observe
+to what we want to observe.** We don’t need to think about low-level abstractions like Timer, Counter, or Gauge to measure
+something, we just need to tell what we want to observe using the Observation API.
+
+Micrometer Observation API is a new type of API that allows us to hide low level APIs such as metrics, logging, and tracing.
+Instead, we have a new concept called `Observation`. Now we just want to observe that something happened in our system,
+and based on that, we may add metrics, logs, or traces. And because it is just a facade for low level API we can still
+expose metrics to monitoring systems.
+
 
 ##### Loggers
 
