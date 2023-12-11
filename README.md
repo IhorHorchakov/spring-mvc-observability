@@ -29,7 +29,7 @@ features ourselves.
 The actuator mainly exposes operational information about the running application — health, metrics, info, dump, env, etc.
 It uses HTTP endpoints or JMX beans to enable us to interact with it.
 
-#### Actuator: 1.x vs 2.x
+##### Actuator: 1.x vs 2.x
 
 Spring Boot Actuator has been available since April 2014, together with the first Spring Boot release. With the release 
 of Spring Boot 2, Actuator has been redesigned, and new exciting endpoints were added, this makes a breaking changes: 
@@ -50,7 +50,7 @@ by implementing the right adapters.
 
 We will be using 2.x Actuator at this project.
 
-#### Actuator: 'Discovery' endpoint and hypermedia
+##### Actuator: 'Discovery' endpoint and hypermedia
 
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
@@ -70,7 +70,7 @@ All the possible endpoints are listed here: [actuator.endpoints](https://docs.sp
 Example of requesting `/beans` endpoint, that we just have enabled:
 ![](img/actuator-beans-endpoint-response.png)
 
-#### Actuator: Health indicators
+##### Actuator: Health indicators
 
 Out-of-the-box Spring Boot registers `DiskSpaceHealthIndicator` and `PingHealthIndicator` to report 
 the healthiness of particular application aspect. Also, Spring Boot registers some indicators conditionally - if some 
@@ -83,7 +83,7 @@ To create a custom health indicator we have to implement `HealthIndicator` inter
 Here is what `/health` endpoint returns in response when RandomHealthIndicator is created:
 ![](img/actuator-beans-endpoint-response.png)
 
-#### Actuator: Metrics | Micrometer
+##### Actuator: Metrics | Micrometer
 
 Spring Boot Actuator provides dependency management and auto-configuration for Micrometer: [Micrometer Observation](https://micrometer.io/docs/observation).
 
@@ -134,12 +134,12 @@ Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 
 TODO: @Observed, ObservedAspect
 
-#### Tracing
+##### Tracing
 
 Distributed tracing allows you to see the entire journey of your requests throughout a distributed system. Spring Boot 
 Actuator uses [Micrometer Tracing](https://micrometer.io/docs/tracing) as a trace collector.
 
-#### Loggers
+##### Loggers
 
 TODO 
 
