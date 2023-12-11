@@ -54,7 +54,7 @@ We will be using 2.x Actuator at this project.
 
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
-<img src="img/actuator-discovery-endpoint-response.png" width="720px"/>
+<img src="img/actuator-discovery-endpoint-response.png" width="720px" style="text-align:center;display:block;"/>
 
 In order to access all the actuator endpoints using HTTP, we need to both enable and expose them. By default, all endpoints
 but `/shutdown` are enabled. Only the `/health` and `/info` endpoints are exposed by default. We need to add the following
