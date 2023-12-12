@@ -34,10 +34,10 @@ It uses HTTP endpoints or JMX beans to enable us to interact with it.
 Spring Boot Actuator has been available since April 2014, together with the first Spring Boot release. With the release 
 of Spring Boot 2, Actuator has been redesigned, and new exciting endpoints were added, this makes a breaking changes: 
 
-* 2.x Actuator become technology-agnostic by using [Micrometer Observation](https://micrometer.io/docs/observation),
-Actuator 1.x is tied to MVC and, therefore, to the Servlet API. In 2.x Actuator the in-house metrics were replaced with 
-Micrometer support, so we can expect breaking changes. If our application were using metric services such as GaugeService
-or CounterService, they would no longer be available. We will interact with Micrometer directly.
+* 2.x Actuator become technology-agnostic. Actuator 1.x is tied to MVC and, therefore, to the Servlet API. In 2.x Actuator
+the in-house metrics were replaced with Micrometer support, so we can expect breaking changes. If our application were 
+using metric services such as GaugeService or CounterService, they would no longer be available. We will interact with 
+Micrometer directly.
 
 * 2.x Actuator security model is merged with the application one, so the security can be configured in one 
 place with main app.
@@ -84,10 +84,11 @@ Here is what `/health` endpoint returns in response when RandomHealthIndicator i
 
 ##### Actuator: Metrics | Micrometer
 
-Spring Boot Actuator provides dependency management and auto-configuration for Micrometer: [Micrometer Observation](https://micrometer.io/docs/observation).
+Spring Boot Actuator provides dependency management and auto-configuration for [Micrometer](https://micrometer.io/), an application metrics facade
+that supports numerous monitoring systems: Datadog, Dynatrace, Graphite, Humio, New Relic, OpenTelemetry, Prometheus, Wavefront.
 
-We can use Actuator to get a possible metric names from the `/metrics` endpoint. All the possible metrics are listed here.
-<p align="center"><img src="img/actuator-metrics-jvm-threads-endpoint-response.png" width="600px"/></p>
+We can use Actuator to get a possible metric names from the `/metrics` endpoint:
+<p align="center"><img src="img/actuator-metrics-endpoint-response.png" width="600px"/></p>
 
 ##### Micrometer: Meter and MeterRegistry
 
@@ -142,16 +143,26 @@ Supported Tracers:
 * [OpenZipkin Brave](https://github.com/openzipkin/brave) - [Zipkin](https://zipkin.io/) / [Wavefront](https://docs.wavefront.com/) by dependency `io.micrometer:micrometer-tracing-bridge-brave`
 * [OpenTracing Specification](https://opentracing.io/) - is considered to be deprecated/archived, so projects smoothly migrate to OpenTelemetry `io.micrometer:micrometer-tracing-bridge-otel`
 
-We will be using Zipkin Brave tracer. Bridge dependency gives us the tracer for programmatic/manual tracing, so we 
-will be able to use Spans programmatically. In addition, the bridge creates a default preconfigured beans in Spring 
-application context so that we will use the tracer by convention.
+Bridge dependency gives us the Tracer for programmatic/manual tracing, so we will be able to use Spans programmatically.
+In addition, the bridge creates a default preconfigured beans in Spring application context so that we will use the tracer
+by convention.
 
-Micrometer uses the concept of reporters to export traces via HTTP/RPC to some destination trace collector:
+We will be using `Zipkin` Tracer to create traces.
+
+Micrometer uses the concept of Reporter to export traces via HTTP/RPC to some destination trace collector:
 * Wavefront reporter by dependency `io.micrometer:micrometer-tracing-reporter-wavefront`
 * OpenZipkin Zipkin Brave reporter by dependency `io.zipkin.reporter2:zipkin-reporter-brave`
 * OpenZipkin Zipkin exporter with OpenTelemetry by dependency `io.opentelemetry:opentelemetry-exporter-zipkin`
 * OpenZipkin URL sender by dependency `io.zipkin.reporter2:zipkin-sender-urlconnection`
-We will be using Zipkin Brave reporter.
+
+We will be using `OpenZipkin Zipkin Brave` Reporter to export traces.
+
+Having chosen a tracer and reporter, we need to decide what's the destination to report and collect traces. The most famous 
+trace collectors are: [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://zipkin.io/), and [Grafana Tempo](https://grafana.com/oss/tempo/).
+Here is a comparison guide [Jaeger vs Zipkin vs Grafana Tempo](https://codersociety.com/blog/articles/jaeger-vs-zipkin-vs-tempo) 
+that will help us to get the right collector.
+
+For the sake of simplicity we will be using `Grafana Tempo`.
 
 ##### Micrometer: Instrumentation using Observation API
 DRAFT
