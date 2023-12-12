@@ -1,6 +1,6 @@
 This is a draft project to play with observability && monitoring configs.
 
-## Prerequisites
+### Prerequisites
 
 * `Spring MVC` is used as core to build modules
 * `Spring Boot Actuator` is a metric collector/registry
@@ -11,14 +11,14 @@ This is a draft project to play with observability && monitoring configs.
 * `Tempo` is used as a distributed tracing tool, which can track requests that span across different systems
 * `Docker` used for containerized builds
 
-## Theory
+### Theory
 
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
 three pillars - **logging, metrics and traces**.
 
 For metrics and traces Spring uses `Spring Boot Actuator`. For logging ...
 
-### Metrics and Traces | Spring Boot Actuator
+#### Metrics and Traces | Spring Boot Actuator
 
 Actuator brings production-ready features to our application: monitoring our app, gathering metrics, and understanding 
 traffic or the state of our database becomes trivial with this dependency.
@@ -129,10 +129,29 @@ Getting Counter metric `Counted:RestApiController.getCars`:
 Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 <p align="center"><img src="img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png" width="600px"/></p>
 
-##### Tracing
+##### Micrometer: Tracing
 
-Distributed tracing allows you to see the entire journey of your requests throughout a distributed system. Spring Boot 
-Actuator uses [Micrometer Tracing](https://micrometer.io/docs/tracing) as a trace collector.
+Distributed tracing allows you to see the entire journey of your requests throughout a distributed system. 
+
+Before Spring Boot 3 we used to add the Spring Cloud Sleuth dependency to add distributed tracing capabilities to our 
+application, but starting from Spring Boot 3 Spring Cloud Sleuth is no longer needed and this is replaced by the Spring Boot 
+Actuator using [Micrometer Tracing](https://micrometer.io/docs/tracing), which is as a tracing facade.
+
+Supported Tracers: 
+* [OpenTelemetry Specification](https://opentelemetry.io/) - [OpenTelemetry protocol](https://opentelemetry.io/docs/specs/otel/protocol/) / [Zipkin](https://zipkin.io/) / [Wavefront](https://docs.wavefront.com/) by dependency 
+* [OpenZipkin Brave](https://github.com/openzipkin/brave) - [Zipkin](https://zipkin.io/) / [Wavefront](https://docs.wavefront.com/) by dependency `io.micrometer:micrometer-tracing-bridge-brave`
+* [OpenTracing Specification](https://opentracing.io/) - is considered to be deprecated/archived, so projects smoothly migrate to OpenTelemetry `io.micrometer:micrometer-tracing-bridge-otel`
+
+We will be using Zipkin Brave tracer. Bridge dependency gives us the tracer for programmatic/manual tracing, so we 
+will be able to use Spans programmatically. In addition, the bridge creates a default preconfigured beans in Spring 
+application context so that we will use the tracer by convention.
+
+Micrometer uses the concept of reporters to export traces via HTTP/RPC to some destination trace collector:
+* Wavefront reporter by dependency `io.micrometer:micrometer-tracing-reporter-wavefront`
+* OpenZipkin Zipkin Brave reporter by dependency `io.zipkin.reporter2:zipkin-reporter-brave`
+* OpenZipkin Zipkin exporter with OpenTelemetry by dependency `io.opentelemetry:opentelemetry-exporter-zipkin`
+* OpenZipkin URL sender by dependency `io.zipkin.reporter2:zipkin-sender-urlconnection`
+We will be using Zipkin Brave reporter.
 
 ##### Micrometer: Instrumentation using Observation API
 DRAFT
@@ -146,10 +165,8 @@ Instead, we have a new concept called `Observation`. Now we just want to observe
 and based on that, we may add metrics, logs, or traces. And because it is just a facade for low level API we can still
 expose metrics to monitoring systems.
 
-
-##### Loggers
-
-TODO 
+A `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for
+every completed observation.
 
 ### Visualization tools
 

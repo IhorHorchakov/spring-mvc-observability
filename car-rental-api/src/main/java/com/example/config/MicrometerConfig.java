@@ -30,7 +30,7 @@ public class MicrometerConfig {
 
     /* Declare the CountedAspect bean needed to use @Counted annotation */
     @Bean
-    CountedAspect countedAspect(MeterRegistry registry) {
+    public CountedAspect countedAspect(MeterRegistry registry) {
         return new CountedAspect(registry);
     }
 

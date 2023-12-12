@@ -22,3 +22,7 @@ services:
       - DEBUG_PORT=9252
     build:
       context: car-rental-manager
+
+# grafana
+# tempo
+# loki
