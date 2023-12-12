@@ -139,9 +139,9 @@ application, but starting from Spring Boot 3 Spring Cloud Sleuth is no longer ne
 Actuator using [Micrometer Tracing](https://micrometer.io/docs/tracing), which is as a tracing facade.
 
 Supported Tracers: 
-* [OpenTelemetry Specification](https://opentelemetry.io/) - [OpenTelemetry protocol](https://opentelemetry.io/docs/specs/otel/protocol/) / [Zipkin](https://zipkin.io/) / [Wavefront](https://docs.wavefront.com/) by dependency 
-* [OpenZipkin Brave](https://github.com/openzipkin/brave) - [Zipkin](https://zipkin.io/) / [Wavefront](https://docs.wavefront.com/) by dependency `io.micrometer:micrometer-tracing-bridge-brave`
-* [OpenTracing Specification](https://opentracing.io/) - is considered to be deprecated/archived, so projects smoothly migrate to OpenTelemetry `io.micrometer:micrometer-tracing-bridge-otel`
+* [OpenTelemetry Specification](https://opentelemetry.io/) - [OpenTelemetry protocol](https://opentelemetry.io/docs/specs/otel/protocol/) by dependency `io.micrometer:micrometer-tracing-bridge-otel`
+* [OpenZipkin Brave](https://github.com/openzipkin/brave) - by dependency `io.micrometer:micrometer-tracing-bridge-brave`
+* [OpenTracing Specification](https://opentracing.io/) - is considered to be archived, so projects smoothly migrate to OpenTelemetry
 
 Bridge dependency gives us the Tracer for programmatic/manual tracing, so we will be able to use Spans programmatically.
 In addition, the bridge creates a default preconfigured beans in Spring application context so that we will use the tracer
@@ -162,7 +162,7 @@ trace collectors are: [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://
 Here is a comparison guide [Jaeger vs Zipkin vs Grafana Tempo](https://codersociety.com/blog/articles/jaeger-vs-zipkin-vs-tempo) 
 that will help us to get the right collector.
 
-For the sake of simplicity we will be using `Grafana Tempo`.
+We will be using `Grafana Tempo` Collector.
 
 ##### Micrometer: Instrumentation using Observation API
 DRAFT
