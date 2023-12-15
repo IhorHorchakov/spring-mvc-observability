@@ -1,24 +1,25 @@
 This is a draft project to play with observability && monitoring configs.
 
-### Prerequisites
+#### Prerequisites
 
 * `Spring MVC` is used as core to build modules
-* `Spring Boot Actuator` is a metric collector/registry
-* `Micrometer` is a facade for monitoring systems and metric aggregation tools (Prometheus)
-* `Prometheus` as a metrics aggregation tool
-* `Loki` is a log aggregation tool that receives the logs from our application and indexes the logs to be visualized using Grafana
-* `Grafana` helps to visualize the metrics by building different dashboards. References to Prometheus to 
-* `Tempo` is used as a distributed tracing tool, which can track requests that span across different systems
+* `Spring Boot Actuator` is a metric registry
+* `Micrometer` is a facade for monitoring systems. 
+* `Prometheus` as a metrics collector and aggregation
+* `Grafana` helps to visualize the metrics and traces by building different dashboards. References to Prometheus and Tempo. 
+* `Tempo` is a trace collector
 * `Docker` used for containerized builds
 
-### Theory
+---
+#### Intro
 
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
 three pillars - **logging, metrics and traces**.
 
-For metrics and traces Spring uses `Spring Boot Actuator`. For logging ...
+For metrics and traces Spring uses `Spring Boot Actuator`.
 
-#### Metrics and Traces | Spring Boot Actuator
+---
+#### Metrics
 
 Actuator brings production-ready features to our application: monitoring our app, gathering metrics, and understanding 
 traffic or the state of our database becomes trivial with this dependency.
@@ -130,26 +131,51 @@ Getting Counter metric `Counted:RestApiController.getCars`:
 Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 <p align="center"><img src="img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png" width="600px"/></p>
 
-##### Micrometer: Tracing
+##### Metric collectors and monitoring platforms 
 
-Distributed tracing allows you to see the entire journey of your requests throughout a distributed system. 
+`Prometheus` plays a role of collector suitable to store metrics and aggregate metrics. Prometheus focuses on data acquisition,
+allowing users to select and aggregate time series data in real time. We will be using [Prometheus](https://prometheus.io/)
+to collect the metrics, just the new dependency should be added: `io.micrometer:micrometer-registry-prometheus`.
 
-Before Spring Boot 3 we used to add the Spring Cloud Sleuth dependency to add distributed tracing capabilities to our 
-application, but starting from Spring Boot 3 Spring Cloud Sleuth is no longer needed and this is replaced by the Spring Boot 
+`Grafana` is complete platform for visualizing and analyzing time series data - metrics and traces. Here we can build
+dashboards of metrics at runtime. Grafana is widely used in microservice architectures. We will be using [Grafana](https://grafana.com/oss/grafana/)
+to visualize metrics reported to Prometheus by Micrometer.
+
+Sometimes the combination of Prometheus and Grafana could be replaced by [InfluxDB and Chronograf](https://www.influxdata.com/).
+
+---
+#### Traces
+
+Distributed tracing allows you to see the entire journey of your requests throughout a distributed system.
+
+Before Spring Boot 3 introduced we used to add the Spring Cloud Sleuth dependency to get distributed tracing capabilities to our
+application, but starting from Spring Boot 3 Spring Cloud Sleuth lib is no longer needed and this is replaced by the Spring Boot
 Actuator using [Micrometer Tracing](https://micrometer.io/docs/tracing), which is as a tracing facade.
 
-Supported Tracers: 
-* [OpenTelemetry Specification](https://opentelemetry.io/) - [OpenTelemetry protocol](https://opentelemetry.io/docs/specs/otel/protocol/) by dependency `io.micrometer:micrometer-tracing-bridge-otel`
-* [OpenZipkin Brave](https://github.com/openzipkin/brave) - by dependency `io.micrometer:micrometer-tracing-bridge-brave`
-* [OpenTracing Specification](https://opentracing.io/) - is considered to be archived, so projects smoothly migrate to OpenTelemetry
+If you are new to tracing, we need to quickly define a couple of basic terms. You can wrap any operation in a `span`. It has
+a unique `span id` and contains timing information and some additional metadata (key-value pairs). Because you can produce
+child spans from spans, the whole tree of spans forms a `trace` that shares the same `trace id` (that is, a correlation identifier).
 
-Bridge dependency gives us the Tracer for programmatic/manual tracing, so we will be able to use Spans programmatically.
+In most cases the tracing is configured automatically by adding dependencies.
+
+##### Tracers
+
+Supported Tracers:
+* [OpenTelemetry Specification](https://opentelemetry.io/) - [OpenTelemetry protocol](https://opentelemetry.io/docs/specs/otel/protocol/) 
+by dependency `io.micrometer:micrometer-tracing-bridge-otel`. Supported tracers: Datadog, Dynatrace, Jaeger, New Relic.
+* [OpenZipkin Brave](https://github.com/openzipkin/brave) - by dependency `io.micrometer:micrometer-tracing-bridge-brave`.
+* [OpenTracing Specification](https://opentracing.io/) - is considered to be archived, so projects smoothly migrate to 
+OpenTelemetry. Supported tracers: Jaeger, New Relic, Zipkin.
+
+Bridge dependency gives us the Tracer for programmatic/manual tracing, so we will be able to create spans & traces programmatically.
 In addition, the bridge creates a default preconfigured beans in Spring application context so that we will use the tracer
 by convention.
 
 We will be using `Zipkin` Tracer to create traces.
 
-Micrometer uses the concept of Reporter to export traces via HTTP/RPC to some destination trace collector:
+##### Reporters
+
+Micrometer uses the concept of Reporter to export traces via HTTP/RPC to some destination collector:
 * Wavefront reporter by dependency `io.micrometer:micrometer-tracing-reporter-wavefront`
 * OpenZipkin Zipkin Brave reporter by dependency `io.zipkin.reporter2:zipkin-reporter-brave`
 * OpenZipkin Zipkin exporter with OpenTelemetry by dependency `io.opentelemetry:opentelemetry-exporter-zipkin`
@@ -157,46 +183,25 @@ Micrometer uses the concept of Reporter to export traces via HTTP/RPC to some de
 
 We will be using `OpenZipkin Zipkin Brave` Reporter to export traces.
 
-Having chosen a tracer and reporter, we need to decide what's the destination to report and collect traces. The most famous 
+##### Trace collectors and monitoring tools
+
+Having chosen a tracer and reporter, we need to decide what's the destination to report and collect traces. The most famous
 trace collectors are: [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://zipkin.io/), and [Grafana Tempo](https://grafana.com/oss/tempo/).
-Here is a comparison guide [Jaeger vs Zipkin vs Grafana Tempo](https://codersociety.com/blog/articles/jaeger-vs-zipkin-vs-tempo) 
-that will help us to get the right collector.
+Here is a comparison guide [Jaeger vs Zipkin vs Grafana Tempo](https://codersociety.com/blog/articles/jaeger-vs-zipkin-vs-tempo)
+that will help to get the right collector.
 
 We will be using `Grafana Tempo` Collector.
 
-##### Micrometer: Instrumentation using Observation API
+---
+#### Instrumentation
 DRAFT
-https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
-Instrumentation is the most powerful feature of Micrometer. **The idea is to shift our focus from how we want to observe
-to what we want to observe.** We don’t need to think about low-level abstractions like Timer, Counter, or Gauge to measure
-something, we just need to tell what we want to observe using the Observation API.
-
-Micrometer Observation API is a new type of API that allows us to hide low level APIs such as metrics, logging, and tracing.
-Instead, we have a new concept called `Observation`. Now we just want to observe that something happened in our system,
-and based on that, we may add metrics, logs, or traces. And because it is just a facade for low level API we can still
-expose metrics to monitoring systems.
-
-A `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for
-every completed observation.
-
-### Visualization tools
-
-For the sake of simplicity, we will use Prometheus as a metric-storage and Grafana as a metric-view tool. Grafana is
-widely used for visualization because it provides abilities to dynamically build metric dashboards to see consolidated metric representations. Prometheus is
-also providing a metric view UI, but its representational capabilities are much poorer compared to Grafana.
-
-TODO
+---
+#### Logging
+DRAFT
 
 ---
-Useful links:
+#### Useful links
 
-* https://docs.spring.io/spring-boot/docs/2.0.x/actuator-api/html/
-* https://www.baeldung.com/spring-boot-health-indicators
-* https://www.baeldung.com/micrometer
-* https://spring.io/blog/2018/03/16/micrometer-spring-boot-2-s-new-application-metrics-collector
-
-Samples
-
-* https://github.com/SaiUpadhyayula/springboot3-observablity
-* https://programmingtechie.com/2023/09/09/spring-boot3-observability-grafana-stack/
-* https://mehmetozkaya.medium.com/monitor-spring-boot-custom-metrics-with-micrometer-and-prometheus-using-docker-62798123c714
+https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
+https://github.com/openzipkin/brave-example/blob/master/webmvc4-boot/src/main/java/brave/example/TracingAutoConfiguration.java
+https://cloud.spring.io/spring-cloud-sleuth/reference/html/#features
