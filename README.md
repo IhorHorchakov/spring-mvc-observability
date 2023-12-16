@@ -232,7 +232,7 @@ Here is a comparison guide [Jaeger vs Zipkin vs Grafana Tempo](https://codersoci
 that will help to get the right collector.
 
 We will be using `Grafana Tempo` Collector. Tempo can be easily integrated with Grafana, we can build dashboards with traces:
-<p align="center"><img src="img/grafana-tempo-traces.png" width="600px"/></p>
+<p align="center"><img src="img/grafana-tempo-traces.png" width="800px"/></p>
 
 ##### Create traces and spans
 
@@ -241,7 +241,7 @@ spans and traces programmatically in any place we want to track. Another way is 
 To enable annotations we have to declare the `SpanAspect` bean in Spring Application Context. 
 
 Here I have marked the methods of CarRentalManagerClient by @NewSpan and new traces were created:
-<p align="center"><img src="img/grafana-tempo-client-span.png" width="600px"/></p>
+<p align="center"><img src="img/grafana-tempo-client-span.png" width="800px"/></p>
 
 #### Instrumentation
 
