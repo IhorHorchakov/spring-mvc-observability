@@ -2,7 +2,7 @@ This is a draft project to play with observability && monitoring tools.
 
 #### The App
 
-The monitored application emulates car rental system. It is build of 2 services - API service (car-rental-api) and 
+The monitored application emulates car rental system. It is built of 2 services - API service (car-rental-api) and 
 business service (car-rental-manager). 
 
 The API service is supposed to be called by user to get the list of available cars and pick some car for rent on some period of time.
