@@ -23,7 +23,7 @@ After that, the user picks some carId (b474bafe-8697-4bec-9711-aaea40d5f05f) and
 ```
 <p align="center"><img src="img/car-rental-api-post-rent-endpoint-response.png" width="600px"/></p>
 
-Every time we call the REST API new metric and trace data is getting generated.
+Every time we call the REST API new metric and trace data is getting generated and reported to monitoring systems.
 
 #### Prerequisites
 
@@ -39,8 +39,6 @@ Every time we call the REST API new metric and trace data is getting generated.
 For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
 
-
----
 #### Intro
 
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
@@ -48,7 +46,6 @@ three pillars - **metrics, traces, and loggs**.
 
 For metrics and traces Spring uses `Spring Boot Actuator`.
 
----
 #### Metrics
 
 Actuator brings production-ready features to our application: monitoring our app, gathering metrics, and understanding 
@@ -178,7 +175,6 @@ metrics reported to Prometheus by Micrometer.
 
 Sometimes the combination of Prometheus and Grafana could be replaced by [InfluxDB and Chronograf](https://www.influxdata.com/).
 
----
 #### Traces
 
 Distributed tracing allows you to see the entire journey of your requests throughout a distributed system.
@@ -225,9 +221,9 @@ trace collectors are: [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://
 Here is a comparison guide [Jaeger vs Zipkin vs Grafana Tempo](https://codersociety.com/blog/articles/jaeger-vs-zipkin-vs-tempo)
 that will help to get the right collector.
 
-We will be using `Grafana Tempo` Collector.
+We will be using `Grafana Tempo` Collector. Tempo can be easily integrated with Grafana, we can build dashboards with traces:
+<p align="center"><img src="img/grafana-tempo-traces.png" width="600px"/></p>
 
----
 #### Instrumentation
 
 Instrumentation is the most powerful feature of Micrometer. **The idea is to shift our focus from how we want to observe
@@ -242,16 +238,18 @@ expose metrics to monitoring systems.
 A `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for
 every completed observation.
 
----
 #### Logging
 
 https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
+
 Since we have Micrometer Tracing on the classpath, the logs are automatically correlated (that is, they contain a unique trace identifier). Now we need to ship the logs. For this demo, we ship them to Grafana Loki. We can achieve that by adding the com.github.loki4j:loki-logback-appender dependency (check this link for the latest release version)
 
----
 #### Useful links
 
 https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
+
 https://github.com/openzipkin/brave-example/blob/master/webmvc4-boot/src/main/java/brave/example/TracingAutoConfiguration.java
+
 https://cloud.spring.io/spring-cloud-sleuth/reference/html/#features
+
 https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
