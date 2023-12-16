@@ -4,6 +4,8 @@ import com.example.repository.entity.Car;
 import com.example.repository.entity.Rent;
 import com.example.repository.CarRepository;
 import com.example.repository.RentalRepository;
+import io.micrometer.tracing.annotation.NewSpan;
+import io.micrometer.tracing.annotation.SpanTag;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class CarRentManager {
         return carRepository.getCars();
     }
 
-    public RentResult rentCar(String carId, LocalDateTime from, LocalDateTime to) {
+    public RentResult rentCar(@SpanTag String carId, @SpanTag LocalDateTime from, @SpanTag LocalDateTime to) {
         if (carId == null) {
             return new RentResult(NOT_VALID, "Rent is not valid, carId is null");
         }

@@ -20,7 +20,7 @@ public class MicrometerConfig {
         MeterRegistry meterRegistry = new SimpleMeterRegistry();
         return meterRegistry;
     }
-//
+
 //    /* Declare the ObservedAspect bean needed to use @Observed annotation */
 //    @Bean
 //    public ObservedAspect observedAspect(ObservationRegistry observationRegistry) {

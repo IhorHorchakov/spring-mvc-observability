@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class MicrometerConfig {
 
     /*
-        Spring Actuator injects SimpleMeterRegistry by default and no need to declare this bean manually.
+        Spring Actuator injects SimpleMeterRegistry by default and no need to declare this bean.
         We create this bean intentionally to have a fixed place to debug the creation of registry.
     */
     @Bean
