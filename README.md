@@ -40,8 +40,8 @@ Every time we call the REST API new metric and trace data is getting generated a
 Accessibility: 
 * `car-rental-api` - [http://localhost:8080/car-rent-api](http://localhost:8080/car-rent-api)
 * `car-rental-manager` is not supposed to be used by user
-* `spring boot actuator` for car-rental-api - [http://localhost:8080/car-rental-api-actuator-discovery](http://localhost:8080/car-rental-api-actuator-discovery)
-* `spring boot actuator` for car-rental-manager - [http://localhost:8081/car-rental-manager-actuator-discovery](http://localhost:8081/car-rental-manager-actuator-discovery)
+* `actuator` for car-rental-api - [http://localhost:8080/car-rental-api-actuator-discovery](http://localhost:8080/car-rental-api-actuator-discovery)
+* `actuator` for car-rental-manager - [http://localhost:8081/car-rental-manager-actuator-discovery](http://localhost:8081/car-rental-manager-actuator-discovery)
 * `prometheus` - [http://localhost:9090](http://localhost:9090)
 * `grafana` - [http://localhost:3000](http://localhost:3000)
 
