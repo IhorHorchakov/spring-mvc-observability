@@ -240,7 +240,7 @@ This setup automatically creates spans only for incoming HTTP requests. We can c
 spans and traces programmatically in any place we want to track. Another way is to use `@NewSpan` and `@ContinueSpan` annotations.
 To enable annotations we have to declare the `SpanAspect` bean in Spring Application Context. 
 
-Here I have marked the methods of CarRentalManagerClient by @NewSpan and new traces were created:
+Here I have marked the methods of CarRentalManagerClient by `@NewSpan` and new traces were created:
 <p align="center"><img src="img/grafana-tempo-client-span.png" width="900px"/></p>
 
 #### Instrumentation
