@@ -46,6 +46,7 @@ Accessibility:
 * `grafana` - [http://localhost:3000](http://localhost:3000)
 
 For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
+
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
 
 #### Intro
