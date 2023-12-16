@@ -2,11 +2,12 @@ This is a draft project to play with observability && monitoring tools.
 
 #### The App
 
-The monitored application emulates car rental system. It is built of 2 services - API service (car-rental-api) and 
-business service (car-rental-manager). 
+The monitored application emulates car rental system. It is built of 2 services:
+* API service `car-rental-api` at 8080 port 
+* business service `car-rental-manager` at 8081 port
 
-The API service is supposed to be called by user to get the list of available cars and pick some car for rent on some period of time.
-The business service stores a cars and rent info.
+The API service is supposed to be called by the user to get a list of available cars, then user picks some car for rent on fixed period of time.
+The business service stores a car and rent info.
 
 At first the user has to get the list of available cars:
 `GET: http://localhost:8080/car-rent-api/cars`
@@ -35,6 +36,14 @@ Every time we call the REST API new metric and trace data is getting generated a
 * [Tempo](https://grafana.com/oss/tempo/) is a trace collector, works under Micrometer facade
 * [Grafana](https://grafana.com/oss/grafana/) helps to visualize metrics and traces by building dashboards. References to Prometheus and Tempo to get metrics and traces
 * [Docker](https://www.docker.com/) used for containerized builds
+
+Accessibility: 
+* `car-rental-api` - [http://localhost:8080/car-rent-api](http://localhost:8080/car-rent-api)
+* `car-rental-manager` is not supposed to be used by user
+* `spring boot actuator` for car-rental-api - [http://localhost:8080/car-rental-api-actuator-discovery](http://localhost:8080/car-rental-api-actuator-discovery)
+* `spring boot actuator` for car-rental-manager - [http://localhost:8081/car-rental-manager-actuator-discovery](http://localhost:8081/car-rental-manager-actuator-discovery)
+* `prometheus` - [http://localhost:9090](http://localhost:9090)
+* `grafana` - [http://localhost:3000](http://localhost:3000)
 
 For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
@@ -224,6 +233,15 @@ that will help to get the right collector.
 We will be using `Grafana Tempo` Collector. Tempo can be easily integrated with Grafana, we can build dashboards with traces:
 <p align="center"><img src="img/grafana-tempo-traces.png" width="600px"/></p>
 
+##### Create traces and spans
+
+This setup automatically creates spans only for incoming HTTP requests. We can customize this behaviour by creating 
+spans and traces programmatically in any place we want to track. Another way is to use `@NewSpan` and `@ContinueSpan` annotations.
+To enable annotations we have to declare the `SpanAspect` bean in Spring Application Context. 
+
+Here I have marked the methods of CarRentalManagerClient by @NewSpan and new traces were created:
+<p align="center"><img src="img/grafana-tempo-client-span.png" width="600px"/></p>
+
 #### Instrumentation
 
 Instrumentation is the most powerful feature of Micrometer. **The idea is to shift our focus from how we want to observe
@@ -250,6 +268,6 @@ https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
 
 https://github.com/openzipkin/brave-example/blob/master/webmvc4-boot/src/main/java/brave/example/TracingAutoConfiguration.java
 
-https://cloud.spring.io/spring-cloud-sleuth/reference/html/#features
+https://openvalue.blog/posts/2022/12/16/tracing-in-spring-boot-2-and-3/
 
 https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
