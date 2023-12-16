@@ -1,20 +1,48 @@
-This is a draft project to play with observability && monitoring configs.
+This is a draft project to play with observability && monitoring tools.
+
+#### The App
+
+The monitored application emulates car rental system. It is build of 2 services - API service (car-rental-api) and 
+business service (car-rental-manager). 
+
+The API service is supposed to be called by user to get the list of available cars and pick some car for rent on some period of time.
+The business service stores a cars and rent info.
+
+At first the user has to get the list of available cars:
+`GET: http://localhost:8080/car-rent-api/cars`
+<p align="center"><img src="img/car-rental-api-get-cars-endpoint-response.png" width="600px"/></p>
+
+After that, the user picks some carId (b474bafe-8697-4bec-9711-aaea40d5f05f) and performs rent request:
+`POST: http://localhost:8080/car-rent-api/rent`
+`{
+    "carId": "b474bafe-8697-4bec-9711-aaea40d5f05f",
+    "from": "2023/12/05 22:00:00",
+    "to": "2023/12/06 13:00:00"
+}`
+<p align="center"><img src="img/car-rental-api-post-rent-endpoint-response.png" width="600px"/></p>
+
+Every time we call the REST API new metric and trace data is getting generated.
 
 #### Prerequisites
 
-* `Spring MVC` is used as core to build modules
-* `Spring Boot Actuator` is a metric registry
-* `Micrometer` is a facade for monitoring systems. 
-* `Prometheus` as a metrics collector and aggregation
-* `Grafana` helps to visualize the metrics and traces by building different dashboards. References to Prometheus and Tempo. 
-* `Tempo` is a trace collector
-* `Docker` used for containerized builds
+* [Spring Web](https://docs.spring.io/spring-boot/docs/current/reference/html/web.html#web) is used as core to build modules
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) provides all of Spring Boot’s production-ready monitoring features
+* [Micrometer](https://micrometer.io/) is a facade for monitoring systems 
+* [Prometheus](https://prometheus.io/) as a metrics collector and aggregation tool, works under Micrometer facade
+* [OpenZipkin Brave](https://github.com/openzipkin/brave) - tracer and trace reporter
+* [Tempo](https://grafana.com/oss/tempo/) is a trace collector, works under Micrometer facade
+* [Grafana](https://grafana.com/oss/grafana/) helps to visualize metrics and traces by building dashboards. References to Prometheus and Tempo to get metrics and traces
+* [Docker](https://www.docker.com/) used for containerized builds
+
+For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
+For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
+
 
 ---
 #### Intro
 
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
-three pillars - **logging, metrics and traces**.
+three pillars - **metrics, traces, and loggs**.
 
 For metrics and traces Spring uses `Spring Boot Actuator`.
 
@@ -134,12 +162,17 @@ Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 ##### Metric collectors and monitoring platforms 
 
 `Prometheus` plays a role of collector suitable to store metrics and aggregate metrics. Prometheus focuses on data acquisition,
-allowing users to select and aggregate time series data in real time. We will be using [Prometheus](https://prometheus.io/)
-to collect the metrics, just the new dependency should be added: `io.micrometer:micrometer-registry-prometheus`.
+allowing users to select and aggregate time series data in real time. We will be using Prometheus to collect the metrics, 
+just the new dependency should be added: `io.micrometer:micrometer-registry-prometheus`. This creates Prometheus client 
+working under Micrometer facade.
+
+<p align="center"><img src="img/prometheus-counted-getCars.png" width="600px"/></p>
 
 `Grafana` is complete platform for visualizing and analyzing time series data - metrics and traces. Here we can build
-dashboards of metrics at runtime. Grafana is widely used in microservice architectures. We will be using [Grafana](https://grafana.com/oss/grafana/)
-to visualize metrics reported to Prometheus by Micrometer.
+dashboards of metrics at runtime. Grafana is widely used in microservice architectures. We will be using Grafana to visualize 
+metrics reported to Prometheus by Micrometer.
+
+<p align="center"><img src="img/grafana-counted-getCars.png" width="600px"/></p>
 
 Sometimes the combination of Prometheus and Grafana could be replaced by [InfluxDB and Chronograf](https://www.influxdata.com/).
 
@@ -194,10 +227,24 @@ We will be using `Grafana Tempo` Collector.
 
 ---
 #### Instrumentation
-DRAFT
+
+Instrumentation is the most powerful feature of Micrometer. **The idea is to shift our focus from how we want to observe
+to what we want to observe.** We don’t need to think about low-level abstractions like Timer, Counter, or Gauge to measure
+something, we just need to tell what we want to observe using the Observation API.
+
+Micrometer Observation API is a new type of API that allows us to hide low level APIs such as metrics, logging, and tracing.
+Instead, we have a new concept called `Observation`. Now we just want to observe that something happened in our system,
+and based on that, we may add metrics, logs, or traces. And because it is just a facade for low level API we can still
+expose metrics to monitoring systems.
+
+A `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for
+every completed observation.
+
 ---
 #### Logging
-DRAFT
+
+https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
+Since we have Micrometer Tracing on the classpath, the logs are automatically correlated (that is, they contain a unique trace identifier). Now we need to ship the logs. For this demo, we ship them to Grafana Loki. We can achieve that by adding the com.github.loki4j:loki-logback-appender dependency (check this link for the latest release version)
 
 ---
 #### Useful links
@@ -205,3 +252,4 @@ DRAFT
 https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
 https://github.com/openzipkin/brave-example/blob/master/webmvc4-boot/src/main/java/brave/example/TracingAutoConfiguration.java
 https://cloud.spring.io/spring-cloud-sleuth/reference/html/#features
+https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
