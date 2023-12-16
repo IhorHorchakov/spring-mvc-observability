@@ -14,11 +14,13 @@ At first the user has to get the list of available cars:
 
 After that, the user picks some carId (b474bafe-8697-4bec-9711-aaea40d5f05f) and performs rent request:
 `POST: http://localhost:8080/car-rent-api/rent`
-`{
+```json
+{
     "carId": "b474bafe-8697-4bec-9711-aaea40d5f05f",
     "from": "2023/12/05 22:00:00",
     "to": "2023/12/06 13:00:00"
-}`
+}
+```
 <p align="center"><img src="img/car-rental-api-post-rent-endpoint-response.png" width="600px"/></p>
 
 Every time we call the REST API new metric and trace data is getting generated.
