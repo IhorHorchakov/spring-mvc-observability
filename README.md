@@ -1,9 +1,11 @@
 This is a draft project to play with observability && monitoring tools.
 
 #### 1. The app
+<details open>
+  <summary>#### 1. The app</summary>
 
 The monitored application emulates car rental system. It is built of 2 services:
-* API service `car-rental-api` on 8080 port 
+* API service `car-rental-api` on 8080 port
 * business service `car-rental-manager` on 8081 port
 
 The API service is supposed to be called by the user to get a list of available cars, then user picks some car for rent on fixed period of time.
@@ -25,6 +27,8 @@ After that, the user picks some carId (b474bafe-8697-4bec-9711-aaea40d5f05f) and
 <p align="center"><img src="img/car-rental-api-post-rent-endpoint-response.png" width="600px"/></p>
 
 Every time we call the REST API new metric and trace data is getting generated and reported to monitoring systems.
+
+</details>
 
 #### 2. Prerequisites
 
@@ -60,7 +64,7 @@ features ourselves.
 The actuator mainly exposes operational information about the running application — health, metrics, info, dump, env, etc.
 It uses HTTP endpoints or JMX beans to enable us to interact with it.
 
-##### 4.1. Actuator: 1.x vs 2.x
+##### 4.1 Actuator: 1.x vs 2.x
 
 Spring Boot Actuator has been available since April 2014, together with the first Spring Boot release. With the release 
 of Spring Boot 2, Actuator has been redesigned, and new exciting endpoints were added, this makes a breaking changes: 
@@ -81,7 +85,7 @@ by implementing the right adapters.
 
 We will be using 2.x Actuator at this project.
 
-##### 4.2. Actuator: 'Discovery' endpoint and hypermedia
+##### 4.2 Actuator: 'Discovery' endpoint and hypermedia
 
 All Actuator endpoints are now placed under the `/actuator` path by default. We can tweak this path using the new property
 `management.endpoints.web.base-path=/car-rental-api-actuator-discovery`:
@@ -100,7 +104,7 @@ All the possible endpoints are listed here: [actuator.endpoints](https://docs.sp
 Example of requesting `/beans` endpoint, that we just have enabled:
 <p align="center"><img src="img/actuator-beans-endpoint-response.png" width="600px"/></p>
 
-##### 4.3. Actuator: Health indicators
+##### 4.3 Actuator: Health indicators
 
 Out-of-the-box Spring Boot registers `DiskSpaceHealthIndicator` and `PingHealthIndicator` to report 
 the healthiness of particular application aspect. Also, Spring Boot registers some indicators conditionally - if some 
@@ -113,7 +117,7 @@ To create a custom health indicator we have to implement `HealthIndicator` inter
 Here is what `/health` endpoint returns in response when RandomHealthIndicator is created:
 <p align="center"><img src="img/actuator-health-endpoint-response.png" width="600px"/></p>
 
-##### 4.4. Actuator: Metrics
+##### 4.4 Actuator: Metrics
 
 Spring Boot Actuator provides dependency management and auto-configuration for [Micrometer](https://micrometer.io/), an application metrics facade
 that supports numerous monitoring systems: Datadog, Dynatrace, Graphite, Humio, New Relic, OpenTelemetry, Prometheus, Wavefront.
@@ -121,7 +125,7 @@ that supports numerous monitoring systems: Datadog, Dynatrace, Graphite, Humio, 
 We can use Actuator to get a possible metric names from the `/metrics` endpoint:
 <p align="center"><img src="img/actuator-metrics-endpoint-response.png" width="600px"/></p>
 
-##### 4.5. Micrometer: Meter and MeterRegistry
+##### 4.5 Micrometer: Meter and MeterRegistry
 
 Spring Boot configures a `SimpleMeterRegistry` by default.
 
@@ -161,7 +165,7 @@ Getting Counter metric `Counted:RestApiController.getCars`:
 Getting Gauge metric `Gauge:RentalInMemoryRepository.storage.size`:
 <p align="center"><img src="img/actuator-metrics-gauge-RentalInMemoryRepository-storage-size.png" width="600px"/></p>
 
-##### 4.6. Metric collectors and monitoring platforms 
+##### 4.6 Metric collectors and monitoring platforms 
 
 `Prometheus` plays a role of collector suitable to store metrics and aggregate metrics. Prometheus focuses on data acquisition,
 allowing users to select and aggregate time series data in real time. We will be using Prometheus to collect the metrics, 
@@ -192,7 +196,7 @@ child spans from spans, the whole tree of spans forms a `trace` that shares the 
 
 In most cases the tracing is configured automatically by adding dependencies.
 
-##### 5.1. Tracers
+##### 5.1 Tracers
 
 Supported Tracers:
 * [OpenTelemetry Specification](https://opentelemetry.io/) - [OT protocol](https://opentelemetry.io/docs/specs/otel/protocol/) by dependency `io.micrometer:micrometer-tracing-bridge-otel`. Supported tracers: Datadog, Dynatrace, Jaeger, New Relic.
@@ -205,7 +209,7 @@ by convention.
 
 We will be using `Zipkin` Tracer to create traces.
 
-##### 5.2. Reporters
+##### 5.2 Reporters
 
 Micrometer uses the concept of Reporter to export traces via HTTP/RPC to some destination collector:
 * Wavefront reporter by dependency `io.micrometer:micrometer-tracing-reporter-wavefront`
@@ -215,7 +219,7 @@ Micrometer uses the concept of Reporter to export traces via HTTP/RPC to some de
 
 We will be using `OpenZipkin Zipkin Brave` Reporter to export traces.
 
-##### 5.3. Trace collectors and monitoring tools
+##### 5.3 Trace collectors and monitoring tools
 
 Having chosen a tracer and reporter, we need to decide what's the destination to report and collect traces. The most famous
 trace collectors are: [Jaeger](https://www.jaegertracing.io/), [Zipkin](https://zipkin.io/), and [Grafana Tempo](https://grafana.com/oss/tempo/).
@@ -225,7 +229,7 @@ that will help to get the right collector.
 We will be using `Grafana Tempo` Collector. Tempo can be easily integrated with Grafana, we can build dashboards with traces:
 <p align="center"><img src="img/grafana-tempo-traces.png" width="900px"/></p>
 
-##### 5.4. Create traces and spans
+##### 5.4 Create traces and spans
 
 This setup automatically creates traces only for HTTP requests coming into controllers. We can customize this behaviour 
 by creating spans and traces programmatically in any place we want. Another way is to use `@NewSpan` and `@ContinueSpan` 
@@ -262,7 +266,7 @@ Instead, we have a new concept called `Observation`. Now we just want to observe
 and based on that, we may add metrics, logs, or traces. And because it is just a facade for low level API we can still
 expose metrics to monitoring systems.
 
-##### 7.1. Instrumentation: ObservationHandler
+##### 7.1 Instrumentation: ObservationHandler
 
 Ok, so now we can focus on our intent, and this is very good, but how can we get some metrics, logs, or traces if all 
 that we did is just added observation? This is where the `ObservationHandler` comes in. All we need to do now is to register
@@ -277,7 +281,7 @@ There are a couple of ObservationHandlers already provided for us:
 `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for 
 every completed observation. At this point we can use Observation API to create observations [programmatically](https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/#how-to-use-this-api).
 
-##### 7.2. Instrumentation: AOP Observations
+##### 7.2 Instrumentation: AOP Observations
 
 Usually, creating observations programmatically mixes up the code a lot. Using the AOP to declare observations in a 
 cross-cutting manner makes the code much clearer.
