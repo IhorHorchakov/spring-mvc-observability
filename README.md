@@ -42,7 +42,7 @@ For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
 
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
 
-For logging we are going to use 
+For logging we are going to use Logback Loki + Grafana;
 
 #### Intro
 
