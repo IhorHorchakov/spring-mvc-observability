@@ -2,7 +2,7 @@ This is a draft project to play with observability && monitoring tools.
 
 #### 1. The app
 <details open>
-  <summary>#### 1. The app</summary>
+  <summary>Click to open/close</summary>
 
 The monitored application emulates car rental system. It is built of 2 services:
 * API service `car-rental-api` on 8080 port
