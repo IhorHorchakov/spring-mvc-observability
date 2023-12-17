@@ -38,18 +38,16 @@ Every time we call the REST API new metric and trace data is getting generated a
 * [Grafana](https://grafana.com/oss/grafana/) helps to visualize metrics and traces by building dashboards. References to Prometheus and Tempo to get metrics and traces
 * [Docker](https://www.docker.com/) used for containerized builds
 
-For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
-
-For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
-
-For logging we are going to use Logback Loki + Grafana;
-
 #### Intro
 
 Observability is the ability to observe the internal state of a running system from the outside. It consists of the 
 three pillars - **metrics, traces, and loggs**.
 
-For metrics and traces Spring uses `Spring Boot Actuator`.
+For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
+
+For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
+
+For logging we are going to use Actuator + Micrometer + Logback Loki + Grafana;
 
 #### Metrics
 
