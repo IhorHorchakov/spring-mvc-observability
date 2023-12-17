@@ -257,7 +257,7 @@ Instrumentation is the most powerful feature of Micrometer. **The idea is to shi
 to what we want to observe.** We don’t need to think about low-level abstractions like Timer, Counter, or Gauge to measure
 something, we just need to tell what we want to observe using the Observation API.
 
-Micrometer Observation API is a new type of API that allows us to hide low level APIs such as metrics, logging, and tracing.
+[Micrometer Observation API](https://micrometer.io/docs/observation) is a new type of API that allows us to hide low level APIs such as metrics, logging, and tracing.
 Instead, we have a new concept called `Observation`. Now we just want to observe that something happened in our system,
 and based on that, we may add metrics, logs, or traces. And because it is just a facade for low level API we can still
 expose metrics to monitoring systems.
