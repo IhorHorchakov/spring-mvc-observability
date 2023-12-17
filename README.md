@@ -4,6 +4,8 @@ This is a draft project to play with observability && monitoring tools.
 <details open>
 <summary>Click to open/close</summary>
 
+<p align="center"><img src="img/app-high-level-diagram.png" width="600px"/></p>
+
 The monitored application emulates car rental system. It is built of 2 services:
 * API service `car-rental-api` on 8080 port
 * business service `car-rental-manager` on 8081 port
@@ -58,9 +60,6 @@ For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
 
 For logging we are going to use Actuator + Micrometer + Logback Loki + Grafana;
-
-<p align="center"><img src="img/app-high-level-diagram.png" width="600px"/></p>
-
 </details>
 
 #### 4. Metrics
