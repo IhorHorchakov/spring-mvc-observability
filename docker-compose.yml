@@ -44,7 +44,7 @@ services:
     volumes:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
-      - "9090:9090" # port to receive traces from Zipkin Brave reporter + Zipkin's UI to find the traces
+      - "9090:9090" # port to receive metrics from Zipkin Brave reporter + Zipkin's UI
 
   grafana-tempo:
     container_name: grafana-tempo
@@ -54,5 +54,12 @@ services:
       - ./docker/tempo/tempo.yml:/etc/tempo.yaml:ro
       - ./docker/tempo/tempo-data:/tmp/tempo
     ports:
-      - "3200:3200"  # Tempo
-      - "9411:9411" # zipkin
+      - "3200:3200"  # port to retrieve traces by Grafana
+      - "9411:9411"  # port to receive traces from Zipkin Brave reporter
+
+  loki:
+    container_name: loki
+    image: grafana/loki:main
+    command: [ "-config.file=/etc/loki/local-config.yaml" ]
+    ports:
+      - "3100:3100" # port to receive logs

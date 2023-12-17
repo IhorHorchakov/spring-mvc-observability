@@ -236,9 +236,9 @@ We will be using `Grafana Tempo` Collector. Tempo can be easily integrated with 
 
 ##### Create traces and spans
 
-This setup automatically creates spans only for incoming HTTP requests. We can customize this behaviour by creating 
-spans and traces programmatically in any place we want to track. Another way is to use `@NewSpan` and `@ContinueSpan` annotations.
-To enable annotations we have to declare the `SpanAspect` bean in Spring Application Context. 
+This setup automatically creates traces only for HTTP requests coming into controllers. We can customize this behaviour 
+by creating spans and traces programmatically in any place we want. Another way is to use `@NewSpan` and `@ContinueSpan` 
+annotations. To enable annotations we have to declare the `SpanAspect` bean in Spring Application Context. 
 
 Here I have marked the methods of CarRentalManagerClient by `@NewSpan` and new traces were created:
 <p align="center"><img src="img/grafana-tempo-client-span.png" width="900px"/></p>
@@ -259,9 +259,14 @@ every completed observation.
 
 #### Logging
 
-https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
+Since we have Micrometer Tracing on the classpath and we are using Grafana, we just need to ship the logs. For this demo,
+we ship them to [Grafana Loki](https://grafana.com/oss/loki/).
 
-Since we have Micrometer Tracing on the classpath, the logs are automatically correlated (that is, they contain a unique trace identifier). Now we need to ship the logs. For this demo, we ship them to Grafana Loki. We can achieve that by adding the com.github.loki4j:loki-logback-appender dependency (check this link for the latest release version)
+To enable Loki we have to add the new dependency `com.github.loki4j:loki-logback-appender`.
+
+I have configured Loki to write logs in fixed format. Grafana is configured to get logs from Loki:
+
+<p align="center"><img src="img/grafana-loki-loggs.png" width="900px"/></p>
 
 #### Useful links
 

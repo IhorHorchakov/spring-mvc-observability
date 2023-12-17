@@ -33,7 +33,7 @@ public class CarRentController {
         log.info("Receive CarRentRequest: {}", request);
         RentResult result = manager.rentCar(request.getCarId(), request.getFrom(), request.getTo());
         CarRentResponse response = CarRentResponse.from(result);
-        log.info("CarRentResponse: {}", result);
+        log.info("CarRentResponse: {}", response);
         return ResponseEntity.ofNullable(response);
     }
 }
