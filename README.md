@@ -275,7 +275,7 @@ There are a couple of ObservationHandlers already provided for us:
 * `CompositeObservationHandler` to use multiple handlers for one observation
 
 `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for 
-every completed observation. At this point we can use [Observation API](https://spring.io/blog/2022/10/12/observability-with-spring-boot-3) to create observations [programmatically](https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/#how-to-use-this-api).
+every completed observation. At this point we can use Observation API to create observations [programmatically](https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/#how-to-use-this-api).
 
 ##### Instrumentation: AOP Observations
 
