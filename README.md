@@ -32,22 +32,17 @@ Every time we call the REST API new metric and trace data is getting generated a
 * [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) provides all of Spring Boot’s production-ready monitoring features
 * [Micrometer](https://micrometer.io/) is a facade for monitoring systems 
 * [Prometheus](https://prometheus.io/) as a metrics collector and aggregation tool, works under Micrometer facade
-* [OpenZipkin Brave](https://github.com/openzipkin/brave) - tracer and trace reporter
-* [Tempo](https://grafana.com/oss/tempo/) is a trace collector, works under Micrometer facade
+* [OpenZipkin Brave](https://github.com/openzipkin/brave) - tracer and trace reporter, sends traces to Grafana-Tempo
+* [Grafana-Tempo](https://grafana.com/oss/tempo/) is a trace collector, works under Micrometer facade, integrated with Grafana 
+* [Grafana-Loki](https://grafana.com/oss/loki/) is a centralized log collector, integrated with Grafana
 * [Grafana](https://grafana.com/oss/grafana/) helps to visualize metrics and traces by building dashboards. References to Prometheus and Tempo to get metrics and traces
 * [Docker](https://www.docker.com/) used for containerized builds
-
-Accessibility: 
-* `car-rental-api` - [http://localhost:8080/car-rent-api](http://localhost:8080/car-rent-api)
-* `car-rental-manager` is not supposed to be used by user
-* `actuator` for car-rental-api - [http://localhost:8080/car-rental-api-actuator-discovery](http://localhost:8080/car-rental-api-actuator-discovery)
-* `actuator` for car-rental-manager - [http://localhost:8081/car-rental-manager-actuator-discovery](http://localhost:8081/car-rental-manager-actuator-discovery)
-* `prometheus` - [http://localhost:9090](http://localhost:9090)
-* `grafana` - [http://localhost:3000](http://localhost:3000)
 
 For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
 
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
+
+For logging we are going to use 
 
 #### Intro
 
@@ -243,7 +238,7 @@ annotations. To enable annotations we have to declare the `SpanAspect` bean in S
 Here I have marked the methods of CarRentalManagerClient by `@NewSpan` and new traces were created:
 <p align="center"><img src="img/grafana-tempo-client-span.png" width="900px"/></p>
 
-#### Instrumentation
+#### Micrometer: Instrumentation
 
 Instrumentation is the most powerful feature of Micrometer. **The idea is to shift our focus from how we want to observe
 to what we want to observe.** We don’t need to think about low-level abstractions like Timer, Counter, or Gauge to measure
@@ -257,18 +252,35 @@ expose metrics to monitoring systems.
 A `DefaultMeterObservationHandler` is automatically registered on the `ObservationRegistry`, which creates metrics for
 every completed observation.
 
-#### Logging
+#### Centralized Logging
 
-Since we have Micrometer Tracing on the classpath and we are using Grafana, we just need to ship the logs. For this demo,
-we ship them to [Grafana Loki](https://grafana.com/oss/loki/).
+The idea of centralized logging is that the log output of all your applications/services is sent to a central database, 
+which gives you a complete picture of the logs for a single request that was processed by several servers. To identify 
+corresponding log entries, there is also metadata sent with ever log output. The most important metadata are the 
+`traceId` and the `serverName`. The `traceId` identifies logging entries on different servers that belong to the same 
+unit of work, e.g. a request being processed. By the `serverName` you can see on which machines the request was processed.
 
+Since we have Micrometer Tracing on the classpath and we are using Grafana, we just need to ship the logs. Let's use [Grafana Loki](https://grafana.com/oss/loki/).
 To enable Loki we have to add the new dependency `com.github.loki4j:loki-logback-appender`.
 
 I have configured Loki to write logs in fixed format. Grafana is configured to get logs from Loki:
 
 <p align="center"><img src="img/grafana-loki-loggs.png" width="900px"/></p>
 
+There are alternative logging tools that could replace Loki sometimes: [Logstash](https://www.elastic.co/logstash) and [Graylog Open](https://graylog.org/products/source-available/).
+
+#### Accessibility
+
+* `car-rental-api rest api` - [http://localhost:8080/car-rent-api](http://localhost:8080/car-rent-api)
+* `car-rental-manager rest api` is not supposed to be used by user
+* `actuator rest api` for car-rental-api - [http://localhost:8080/car-rental-api-actuator-discovery](http://localhost:8080/car-rental-api-actuator-discovery)
+* `actuator rest api` for car-rental-manager - [http://localhost:8081/car-rental-manager-actuator-discovery](http://localhost:8081/car-rental-manager-actuator-discovery)
+* `prometheus ui` - [http://localhost:9090](http://localhost:9090)
+* `grafana ui` - [http://localhost:3000](http://localhost:3000)
+
 #### Useful links
+
+https://java-online-training.de/?p=59
 
 https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
 
