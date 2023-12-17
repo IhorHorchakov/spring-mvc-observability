@@ -269,6 +269,12 @@ I have configured Loki to write logs in fixed format. Grafana is configured to g
 
 There are alternative logging tools that could replace Loki sometimes: [Logstash](https://www.elastic.co/logstash) and [Graylog Open](https://graylog.org/products/source-available/).
 
+#### Build
+
+To build the application run these commands from project root:
+* `mvn clean package`
+* `docker-compose up`
+
 #### Accessibility
 
 * `car-rental-api rest api` - [http://localhost:8080/car-rent-api](http://localhost:8080/car-rent-api)
