@@ -3,8 +3,8 @@ This is a draft project to play with observability && monitoring tools.
 #### The App
 
 The monitored application emulates car rental system. It is built of 2 services:
-* API service `car-rental-api` at 8080 port 
-* business service `car-rental-manager` at 8081 port
+* API service `car-rental-api` on 8080 port 
+* business service `car-rental-manager` on 8081 port
 
 The API service is supposed to be called by the user to get a list of available cars, then user picks some car for rent on fixed period of time.
 The business service stores a car and rent info.
