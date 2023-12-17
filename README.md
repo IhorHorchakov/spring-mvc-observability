@@ -197,11 +197,9 @@ In most cases the tracing is configured automatically by adding dependencies.
 ##### Tracers
 
 Supported Tracers:
-* [OpenTelemetry Specification](https://opentelemetry.io/) - [OpenTelemetry protocol](https://opentelemetry.io/docs/specs/otel/protocol/) 
-by dependency `io.micrometer:micrometer-tracing-bridge-otel`. Supported tracers: Datadog, Dynatrace, Jaeger, New Relic.
+* [OpenTelemetry Specification](https://opentelemetry.io/) - [OT protocol](https://opentelemetry.io/docs/specs/otel/protocol/) by dependency `io.micrometer:micrometer-tracing-bridge-otel`. Supported tracers: Datadog, Dynatrace, Jaeger, New Relic.
 * [OpenZipkin Brave](https://github.com/openzipkin/brave) - by dependency `io.micrometer:micrometer-tracing-bridge-brave`.
-* [OpenTracing Specification](https://opentracing.io/) - is considered to be archived, so projects smoothly migrate to 
-OpenTelemetry. Supported tracers: Jaeger, New Relic, Zipkin.
+* [OpenTracing Specification](https://opentracing.io/) - is considered to be archived, so projects smoothly migrate to OpenTelemetry. Supported tracers: Jaeger, New Relic, Zipkin.
 
 Bridge dependency gives us the Tracer for programmatic/manual tracing, so we will be able to create spans & traces programmatically.
 In addition, the bridge creates a default preconfigured beans in Spring application context so that we will use the tracer
