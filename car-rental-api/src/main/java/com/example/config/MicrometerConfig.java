@@ -1,11 +1,16 @@
 package com.example.config;
 
+import brave.handler.MutableSpan;
+import brave.handler.SpanHandler;
+import brave.propagation.TraceContext;
 import io.micrometer.core.aop.CountedAspect;
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.aop.ObservedAspect;
+import io.micrometer.tracing.annotation.MethodInvocationProcessor;
+import io.micrometer.tracing.annotation.SpanAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,4 +39,20 @@ public class MicrometerConfig {
         return new CountedAspect(registry);
     }
 
+    /* Declare the SpanAspect bean needed to support @NewSpan annotation */
+    @Bean
+    public SpanAspect spanAspect(MethodInvocationProcessor methodInvocationProcessor) {
+        return new SpanAspect(methodInvocationProcessor);
+    }
+
+    @Bean
+    public SpanHandler spanHandler() {
+        return new SpanHandler() {
+            @Override
+            public boolean end(TraceContext traceContext, MutableSpan span, Cause cause) {
+                // Here we can expand span name with more info
+                return true;
+            }
+        };
+    }
 }
