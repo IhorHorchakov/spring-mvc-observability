@@ -309,14 +309,9 @@ To build the application run these commands from project root:
 
 #### Useful links
 
-https://java-online-training.de/?p=59
-
-https://programmingtechie.com/2023/09/09/spring-boot3-observability-grafana-stack/
-
-https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
-
-https://piotrminkowski.com/2023/07/05/logging-in-spring-boot-with-loki/
-
-https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
-
-https://openvalue.blog/posts/2022/12/16/tracing-in-spring-boot-2-and-3/
+* https://java-online-training.de/?p=59
+* https://programmingtechie.com/2023/09/09/spring-boot3-observability-grafana-stack/
+* https://spring.io/blog/2022/10/12/observability-with-spring-boot-3
+* https://piotrminkowski.com/2023/07/05/logging-in-spring-boot-with-loki/
+* https://softwaremill.com/new-micrometer-observation-api-with-spring-boot-3/
+* https://openvalue.blog/posts/2022/12/16/tracing-in-spring-boot-2-and-3/
