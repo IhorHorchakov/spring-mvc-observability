@@ -11,8 +11,6 @@ The monitored application emulates car rental system. It is built of 2 services:
 The API service is supposed to be called by the user to get a list of available cars, then user picks some car for rent on fixed period of time.
 The business service stores a car and rent info.
 
-<p align="center"><img src="img/app-high-level-diagram.png" width="600px"/></p>
-
 At first the user has to get the list of available cars:
 `GET: http://localhost:8080/car-rent-api/cars`
 <p align="center"><img src="img/car-rental-api-get-cars-endpoint-response.png" width="600px"/></p>
@@ -60,6 +58,9 @@ For metrics we are going to use Actuator + Micrometer + Prometheus + Grafana;
 For traces we are going to use Actuator + Micrometer + OpenZipkin Brave + Tempo + Grafana;
 
 For logging we are going to use Actuator + Micrometer + Logback Loki + Grafana;
+
+<p align="center"><img src="img/app-high-level-diagram.png" width="600px"/></p>
+
 </details>
 
 #### 4. Metrics
